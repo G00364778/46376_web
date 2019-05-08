@@ -103,7 +103,7 @@ function ProcessLogin(){
 function onloadjs(){
   // load the data from sales.csv to globalData
   //console.log('onloadjs');
-  d3.csv("sales.csv").then(function(data) {
+  d3.csv("https://raw.githubusercontent.com/G00364778/46376_web/master/project/sales.csv").then(function(data) {
     data.forEach(function(d){
       d.sales = Number(d.sales);
       line={"tag":d.month,"val":d.sales};
