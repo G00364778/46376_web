@@ -51,7 +51,8 @@ function setActive(idx) {
 
 function LoadLoginPage(){
   page='' +
-  '<h1>Login to WEC service</h1>' +
+  '<h1>Login to WEC service</h1>'+
+  '<img src="img/login.jpg" width="359" height="140" border="0" alt="">'+
   '<p>Please log in to the WEC services to access costomised options and features.' + 
   '<form name="loginform" method="post" action="" onsubmit="return validateLoginForm()">' +
   '<table>' +
@@ -90,12 +91,12 @@ function ProcessLogin(){
   }
   if (user) {
     document.getElementById("errors").innerHTML = "Valid user logged in...";
-    document.getElementById("userid").innerHTML = '<i class="fa fa-user" style="color:green">&nbsp;</i>' + users[item].username;
+    document.getElementById("userid").innerHTML = '<i class="fa fa-user fa-2x" style="color:green">&nbsp;</i>' + users[item].username;
     return false;
   }
   else {
     //document.getElementById("pageinfo").innerHTML = "Logged in";
-    document.getElementById("userid").innerHTML = '<i class="fa fa-user" style="color:red">&nbsp;</i>';
+    document.getElementById("userid").innerHTML = '<i class="fa fa-user fa-2x" style="color:red">&nbsp;</i>';
     document.getElementById("errors").innerHTML = "Sorry, the username or password is incorrect, please try again";
     return user
   }
@@ -103,11 +104,16 @@ function ProcessLogin(){
 function onloadjs(){
   // load the data from sales.csv to globalData
   //console.log('onloadjs');
-  d3.csv("https://raw.githubusercontent.com/G00364778/46376_web/master/project/sales.csv").then(function(data) {
+  //file from local folder
+  //fileURL="sales.csv";
+  // or file from github
+  fileURL="https://raw.githubusercontent.com/G00364778/46376_web/master/project/sales.csv";
+  console.log('loading data from on startup:',fileURL);
+  d3.csv(fileURL).then(function(data) {
     data.forEach(function(d){
       d.sales = Number(d.sales);
       line={"tag":d.month,"val":d.sales};
-      //console.log(line);
+      console.log(line);
       globalData.push(line);
     });
   });
@@ -124,6 +130,7 @@ function GraphFromFileV2(SVG_div_id, fileName){
 }
 
 function GraphFromFile(SVG_div_id, fileName){
+  console.log('graph from local file');
   d3.csv(fileName).then(function(data) {
     data.forEach(function(d){
       d.sales = Number(d.sales);
@@ -133,6 +140,7 @@ function GraphFromFile(SVG_div_id, fileName){
  }
 
 function GraphFromData(SVG_div_id){
+  console.log('graph from data');
   keys=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
   vals=[5,7,9,10,12,15,8];
   data = [];
@@ -143,6 +151,7 @@ function GraphFromData(SVG_div_id){
 }
 
 function GraphFromGlobalData(SVG_div_id){
+  console.log('graph from global data loaded from url on startup');
   drawSVGGrapgh_2(SVG_div_id, globalData);
 }
 
@@ -251,21 +260,24 @@ var userdata = {
 thanks=''+
 '<h1>Thanks</h1>'+
 '<p>Your message was successfully submitted!'+
+'<p>One of our team will be in touch shortly do discuss your requirements.'+
+'<p><img src="img/rig.PNG" height="183" border="0" alt="">'+
+'<img src="img/stepper_application.png" height="183" border="0" alt="">'+
 '';
 
 home=''+
 '<h1>About US</h1>'+
-'<p>Wicklow Engineering Consultancy was formed in 2014 as a multidisciplinary engineering team spread across the country, covering mechanical, electrical, automation & basic building disciplines. The team are set up to meet the needs of both the property and energy market clients and have all the required specialist functions. Our team are located around Dublin and Wicklow and provide a local, quality engineering solution for our clients.'+
+'<p><img class="img_left" src="img/calipers_2.PNG" width="230" height="170" border="0" alt="" />Wicklow Engineering Consultancy was formed in 2014 as a multidisciplinary engineering team spread across the country, covering mechanical, electrical, automation & basic building disciplines. The team are set up to meet the needs of both the property and energy market clients and have all the required specialist functions. Our team are located around Dublin and Wicklow and provide a local, quality engineering solution for our clients.'+
 '<p>Iris Services originated in 2002, then practicing under the name Iris IS Services. At that time the practice had offices in Sandyford Co. Dublin. There followed a reorganisation in 2008 when we branced into affordable automation. In 1990, a further reorganisation of practice took place with the appointment of two more partners, George Campbell and David Rose, and an expansion into new premises. The partnership was transformed to a limited company in 2012 with the partners becoming directors.'+
 '<p>In 2016 the company was acquired by private stakeholders, and operates as Wicklow Engineering consultancy. Following the retirement of Jim Stanton, Frank Burke was appointed as sole director of the firm.'+
-'<p>As Consulting Engineers we provide an engineering design service for a wide range of projects for the small manufacturing and commercial industry, the food and dairy industry, power and energy, manufacturing and construction industries, the leisure industry, commercial and residential developments and public authority projects both in the field of renovations and new builds. We are also in a position to provide a project management service to our Clients where we are able to undertake the full supervisory brief for a project from site appraisal to concept and through to the completion of site works. We are happy to carry out projects as part of a client appointed design team including all other disciplines, or to operate as contract supervisors with all project requirements carried out in-house or by other professional appointed by us.'+
+'<p><img class="img_left" src="img/eng_calipers.png" width="225" height="155" border="0" alt="">As Consulting Engineers we provide an engineering design service for a wide range of projects for the small manufacturing and commercial industry, the food and dairy industry, power and energy, manufacturing and construction industries, the leisure industry, commercial and residential developments and public authority projects both in the field of renovations and new builds. We are also in a position to provide a project management service to our Clients where we are able to undertake the full supervisory brief for a project from site appraisal to concept and through to the completion of site works. We are happy to carry out projects as part of a client appointed design team including all other disciplines, or to operate as contract supervisors with all project requirements carried out in-house or by other professional appointed by us.'+
 '<p>We have been involved on projects with values ranging from a few hundred Euros to one hundred thousand Euros and are pleased to negotiate fees on a percentage of contract value basis or on a time charge basis, with payments phased to suit our Client\'s requirements.'+
 '';
 
 
 welcome=''+
 '<h1>Welcome to WEC</h1>'+
-'<p>We are a highly efficient and experienced firm of electrical, mechanical and'+
+'<p><img class="img_left" src="img/eng_gear.png" width="404" height="125" border="0" alt="">We are a highly efficient and experienced firm of electrical, mechanical and'+
 ' automation consultants who are able to provide you with a range of services for'+
 ' your proposed project, from a small domestic alteration to a complete new build,'+
 ' industrial complex. We can work as part of a design team appointed by you, or'+
@@ -273,13 +285,14 @@ welcome=''+
 ' design to fully supervised completion on site. We aim to be always accessible to'+
 ' you as our Client, receptive to your requirements, and never to lose sight of the'+
 ' fact that it is your project.'+ 
-'<p>Please feel free to browse this site and should you wish to discuss your project'+
+'<p><img class="img_left" src="img/ic.PNG" width="250" height="170" border="0" alt="">Please feel free to browse this site and should you wish to discuss your project'+
 ' or just require some advice on any matter, do not hesitate to contact us.'+
 '';
 
 contact=''+
 '<h1>Contact us</h1>'+
-'<table>'+
+'<img src="img/contact.png" width="297" height="170" border="0" alt="" />'+
+'<p><table>'+
 '<tr>'+
 '  <th>Address:</th>'+
 '  <td>Wicklow Engineering Consultancy<br>I.D.A. Business Park<br>Southern Cross Road<br>Irishtown<br>Bray<br>Co. Wicklow<br>A98 H5C8<br>Ireland'+
@@ -291,7 +304,7 @@ contact=''+
 '</table>'+
 '<p>'+
 '<form name="mailform" method="post" action="" onsubmit="return processMailForm()">'+
-'<table style="width:550px;border:0;" cellpadding="8" cellspacing="0">'+
+'<table>'+
 '<tr><th>'+
 '<label for="Name">Name*:</label>'+
 '</th><td>'+
@@ -333,7 +346,7 @@ charts=''+
 '</select>'+
 '&nbsp;'+
 'Chart color:'+
-'<input type="color" id="colorPicker">'+
+'<input type="color" value="#0000A0" id="colorPicker">'+
 '&nbsp;'+
 '<button onclick="graphs()">Draw Charts</button>'+
 '  <div id="SVGGraph_1"></div>'+

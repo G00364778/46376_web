@@ -15,8 +15,12 @@
   font-family: Serif;
 }
 
-h1,h2,h3,h4,h5{
-  color: #555;
+h1{
+  color: #000090;
+}
+
+h2,h3,h4,h5{
+  color: #000;
 }
 
 .pageStatus {
@@ -28,6 +32,12 @@ h1,h2,h3,h4,h5{
   height:50px;
   padding:10px;
   border: 0px dashed;
+}
+
+.img_left{
+  margin:0px 15px 0px 0px;
+  display: inline;
+  float:left;
 }
 
 .icon-bar {
@@ -57,14 +67,14 @@ h1,h2,h3,h4,h5{
 }
 
 .active {
-  background-color: #4CAF50; /* Add an active/current color */
+  background-color: #000090; /*#4CAF50; Add an active/current color */
 } 
 
 /* Style page content */
 .content {
   margin-top: 50px;
   margin-left: 90px; /* Same as the width of the sidebar */
-  /*width:800px;*/
+  width:800px;
   padding: 0px 10px;
 }
 
