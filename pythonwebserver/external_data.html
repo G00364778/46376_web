@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <title>Document</title>
+   <script src="https://d3js.org/d3.v5.min.js"></script>
+ </head>
+ <body>
+   <div id="myDiv"></div>
+ 
+ <script type="text/javascript">
+   
+   // import the data 
+   d3.csv("temp_data.csv").then(function(data) {
+   console.log(data);
+   // create the svg container using d3 select, append svg to div above
+   let svgContainer = d3.select("#myDiv").append("svg")
+      .attr("width", 800)
+      .attr("height", 800);
+    // create a variable and select all rectangles in svg containe as associate with data
+    let myRectangle = svgContainer.selectAll("rect")
+       .data(data);
+    // using d3 enter method to add rectangles
+    myRectangle.enter()
+       .append("rect")
+           .attr("x",function(d, i){
+               return 25 + (i*41);
+           })
+           .attr("y", function(d){
+                return 300 - d.temp * 10})
+           .attr("width", 40)
+           .attr("height",function(d){
+               return d.temp * 10;
+           })
+           //.attr("fill", "red");
+           .attr("fill", function(d){
+               if(d.temp <=10) {return "blue";}
+               else if (d.temp<=15){return "green";}
+               else if (d.temp <=20){return "orange";}
+               else {return "red";}});
+           
+
+    // add a lable to the bar chart
+    let mylabel = svgContainer.selectAll("text")
+        .data(data);
+
+    mylabel.enter()
+        .append("text")
+            .attr("x", function(d,i){
+                return 48 + (i*41);
+            })
+            .attr("y", function(d){
+                return 320 - d.temp * 10;
+            })
+            .attr("text-anchor", "middle")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "18px")
+            .attr("fill", "white")
+            .text(function(d){
+                return d.temp + "\u00B0";
+            });
+	});
+ </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Form</title>
+ </head>
+ <body>
+  <form method="post" action="">
+	First Name:<br>
+	<input type="text" name=""><br>
+	Last Name:<br>
+	<input type="text" name=""><br>
+	Email Address:<br>
+	<input type="email" name="">
+	<p>Date of Birth:&nbsp;<input type="date" name="">
+	<fieldset>
+	<legend>Credit Card Type:&nbsp;</legend>
+	<input type="radio" name="cc_type"><img src="images/vc.png" width="50" border="0" alt=""><br>
+	<input type="radio" name="cc_type"><img src="images/vd.png" width="50" border="0" alt=""><br>
+	<input type="radio" name="cc_type"><img src="images/mc.png" width="50" border="0" alt=""><br>
+	<input type="radio" name="cc_type"><img src="images/aa.png" width="50" border="0" alt=""><br>
+	<p><input type="number" name="ccnum" min="12" max="12">&nbsp;Credit Card Number
+	<p>Expiry Year:&nbsp;<select name="exp_y">
+	<option value="2019" selected>2019
+	<option value="2020">2020
+	<option value="2021">2021
+	<option value="2022">2022
+	<option value="2023">2023
+	<option value="2024">2024
+	</select>
+	<p>Expiry Month:&nbsp;<select name="exp_m">
+	<option value="-">Select Month
+	<option value="01">January
+	<option value="02">February
+	<option value="03">March
+	<option value="04">April
+	<option value="05">May
+	<option value="06">June
+	<option value="07">July
+	<option value="08">August
+	<option value="09">September
+	<option value="10">October
+	<option value="11">November
+	<option value="12">December
+	</select>
+	</fieldset>
+	<p>Additional Notes:<br>
+	<textarea name="notes" rows="5" cols="50"></textarea>
+	<p><input type="button" value="Submit Card Details" onclick="">
+  </form>
+ </body>
+</html>

@@ -1,0 +1,89 @@
+/**/
+.pageheader, .pageStatus, .content {
+  font-family: Sans-Serif;
+}
+
+.pageheader {
+  margin-left: 90px;
+  height:50px;
+}
+
+.pageheader h1{
+  color: #555;
+  display: inline-block;
+  font-size: 300%;
+  font-family: Serif;
+}
+
+h1,h2,h3,h4,h5{
+  color: #555;
+}
+
+.pageStatus {
+  /*display: inline;*/
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 150px;
+  height:50px;
+  padding:10px;
+  border: 0px dashed;
+}
+
+.icon-bar {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 90px; /* Set a specific width */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #555; /* Dark-grey background */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+}
+
+.icon-bar a {
+  display: block; /* Make the links appear below each other instead of side-by-side */
+  text-align: center; /* Center-align text */
+  padding: 16px; /* Add some padding */
+  transition: all 0.3s ease; /* Add transition for hover effects */
+  color: white; /* White text color */
+  font-size: 36px; /* Increased font-size */
+}
+
+/* When you mouse over the navigation links, change their color */
+.icon-bar a:hover {
+  background-color: #000; /* Add a hover color */
+}
+
+.active {
+  background-color: #4CAF50; /* Add an active/current color */
+} 
+
+/* Style page content */
+.content {
+  margin-top: 50px;
+  margin-left: 90px; /* Same as the width of the sidebar */
+  /*width:800px;*/
+  padding: 0px 10px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .icon-bar {padding-top: 15px;}
+  .icon-bar a {font-size: 18px;}
+  .icon-bar {width: 50px;}
+  .pageheader {margin-left: 50px;}
+  .content {margin-left: 50px;}
+  .content {width: auto;}
+} 
+@media screen and (max-width: 1000px) {
+  .pageheader h1 {font-size: 250%;}
+}
+
+@media screen and (max-width: 820px) {
+  .pageheader h1 {font-size: 200%;}
+}
+@media screen and (max-width: 700px) {
+  .pageheader h1 {font-size: 100%;}
+}

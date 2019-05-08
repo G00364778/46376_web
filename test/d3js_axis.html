@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>D3 Scaling</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+  <div id="myDiv"></div>
+  <script type="text/javascript">
+    // import the sales data 
+    d3.csv("sales.csv").then(function(data) {
+    console.log(data);
+    //convert to numbers for d3.max to work properly in scaling
+    data.forEach(function(d){
+      d.sales = Number(d.sales);
+    })
+    // create a scale for y
+    var yScale =d3.scaleLinear()
+      .domain([0,d3.max(data, function(d){
+        return d.sales;
+      })])
+      .range([300,0]);
+    //create y Axis
+    var yAxis = d3.axisLeft()
+        .scale(yScale)
+    // create the svg container using d3 select, append svg to div above
+    let svgContainer = d3.select("#myDiv").append("svg")
+    .attr("width", 1000)
+    .attr("height", 1000);
+    //ceate a rectangle
+    var myRectangle = svgContainer.selectAll("rect")
+      .data(data);
+    //add attributes to rectangle
+    myRectangle.enter()
+      .append("rect")
+        .attr("x",function(d,i){
+          return (50+(i*21));
+          })
+        .attr("y",function(d){
+            return yScale(d.sales);
+          })
+        .attr("width",20)
+        .attr("height",function(d){
+            return 300-yScale(d.sales);
+          })
+        .attr("fill","red");
+    //To ensure that the axis is shown on top we do it here after the bars are drawn
+    //We will be appending "svgContainer" declared above on line 28
+    svgContainer.append("g")
+      .attr("transform", "translate(45,0)")
+      .call(yAxis);
+    });
+  </script>
+</body>
+</html>
