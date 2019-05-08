@@ -1,10 +1,12 @@
+// a global variable to hold the object created when data is loaded from the file at startup
 var globalData = [];
 
 function LoadPage(choice) {
-  switch(choice) {
+  //load the pages selected by mouseclick events of the referennces on the icon bar
+  switch(choice) { //switch on the parameter choice passed into the function
     case 'home':
-      setActive(0);
-      document.getElementById("pageinfo").innerHTML = home;
+      setActive(0); //set the iconbar active component
+      document.getElementById("pageinfo").innerHTML = home; //load the connet in home to paginfo div
     break;
     case 'welcome':
       setActive(1);
@@ -22,8 +24,9 @@ function LoadPage(choice) {
     break;
     case 'login':
       // code block
-      LoadLoginPage();
+      //LoadLoginPage();
       setActive(4);
+      document.getElementById("pageinfo").innerHTML = loginpage;
     break;
     case 'charts':
       // code block
@@ -37,78 +40,62 @@ function LoadPage(choice) {
 }
 
 function setActive(idx) {
+  // loop through the iconbar and set the selected item as active and the rest as inactive
   aObj = document.getElementById('menu').getElementsByTagName('a');
   //aObj = document.getElementById('menu').getElementById('item_6');
   for(i=0;i<aObj.length;i++) {
+    //loop throuh all the items and set them inactive
     aObj[i].className='inactive';
   }
+  // then set the one passed into the function as active.
   aObj[idx].className='active';
 }
 
-//function LoadGraphPage(){
-//  
-//}
-
-function LoadLoginPage(){
-  page='' +
-  '<h1>Login to WEC service</h1>'+
-  '<img src="img/login.jpg" width="359" height="140" border="0" alt="">'+
-  '<p>Please log in to the WEC services to access costomised options and features.' + 
-  '<form name="loginform" method="post" action="" onsubmit="return validateLoginForm()">' +
-  '<table>' +
-  '  <tr><td>Email :<td><input id="userid" type="text" value="g00364778@gmit.ie" name="username" required><br>' +
-  '  <tr><td>Password :<td><input id="passwd" type="password" value="password" name="password"><br>' +
-  '  <tr><td><td><input type="button" value="Login" onclick="ProcessLogin()"><br>' +
-  '</table>' +
-  '</form>' +
-  '<p id="errors"></p>' +
-  '';
-  document.getElementById("pageinfo").innerHTML = page;
-}
-
 function ProcessLogin(){
-  //window.alert('Processing Login')
-  //document.write('Logged in')
   //console.log('login code')
-  var users = userdata.users;
-  var user;
-  var username=document.forms["loginform"]["userid"].value;
-  var password=document.forms["loginform"]["passwd"].value;
-  re = /^[A-Za-z0-9\.-]+@[A-Za-z0-9]+[\.][A-Za-z\.]+/igm;
+  // process the login form data and apply user state and icon based on results
+  var users = userdata.users; //load users from the userdata object
+  var user; // create a variable user to hold returned user from list for comparison
+  var username=document.forms["loginform"]["userid"].value; // get the email address from the form
+  var password=document.forms["loginform"]["passwd"].value; // get the password from the form
+  // create a reguar expression string to validate the input against
+  re = /^[A-Za-z0-9\.-]+@[A-Za-z0-9]+[\.][A-Za-z\.]+/igm; 
+  // if the username is empty or the email address criteria is not met against the regular expression
+  // return false, otherwise move on
   if (username == "" || !re.test(username)) {
     //alert("Name must be filled out");
     document.getElementById("errors").innerHTML = "Error: a valid email address must be filled out";
     return false;
   }
-  
+  // loop through the user list and compare the values passed in the form to the values in the list
   for (var item in users) {
+    // if a match is found  update the user varaible with the username in the list
     if (users[item].email == username && users[item].password == password) {
-      document.getElementById("errors").innerHTML = "The username or password is incorrect";
       user = users[item];
       //console.log(user);
       break;
     }
   }
+  // if a user variable was set with a value in the step above write a message to the screen and set the icon and name  
   if (user) {
     document.getElementById("errors").innerHTML = "Valid user logged in...";
     document.getElementById("userid").innerHTML = '<i class="fa fa-user fa-2x" style="color:green">&nbsp;</i>' + users[item].username;
-    return false;
+    return true;
   }
   else {
-    //document.getElementById("pageinfo").innerHTML = "Logged in";
+    // otherwise set write a negative message and set iconto red and return false
     document.getElementById("userid").innerHTML = '<i class="fa fa-user fa-2x" style="color:red">&nbsp;</i>';
     document.getElementById("errors").innerHTML = "Sorry, the username or password is incorrect, please try again";
-    return user
+    return false;
   }
 }
 function onloadjs(){
-  // load the data from sales.csv to globalData
-  //console.log('onloadjs');
-  //file from local folder
-  //fileURL="sales.csv";
-  // or file from github
+  // when the homepage loads initially run this routine
+  //set a local or web url for the csv file to load graph data from
   fileURL="https://raw.githubusercontent.com/G00364778/46376_web/master/project/sales.csv";
+  //write this to the console log validation and tracking puposes
   console.log('loading data from on startup:',fileURL);
+  //load the data from the file into a global variable for later graphing
   d3.csv(fileURL).then(function(data) {
     data.forEach(function(d){
       d.sales = Number(d.sales);
@@ -117,45 +104,45 @@ function onloadjs(){
       globalData.push(line);
     });
   });
+  //also load the home page data on startup from the home object holding the html code
   document.getElementById("pageinfo").innerHTML = home;
 }
-
+// the graphs function called by the show graphs button on the graphs page
 function graphs(){
+  // generate graph from the global data loaded on startup into a variable
   GraphFromGlobalData("#SVGGraph_1");
+  // call a graph function using local data 
   GraphFromData("#SVGGraph_2");
 }
 
-function GraphFromFileV2(SVG_div_id, fileName){
-  console.log(globalData);
-}
-
-function GraphFromFile(SVG_div_id, fileName){
-  console.log('graph from local file');
-  d3.csv(fileName).then(function(data) {
-    data.forEach(function(d){
-      d.sales = Number(d.sales);
-    });
-    drawSVGGrapgh(SVG_div_id, data);
-  });
- }
-
 function GraphFromData(SVG_div_id){
+  // graph from data generate a js object from two local ararys and pass that into the 
+  // drawSVGGraph function that generate the svg in the svgid passed into the function call.
+  // The svg id's are created in advance when the graph page is loaded from the icon menu 
+  // function call
+  
+  //create a console log message 
   console.log('graph from data');
+  // create an array of keys to pass into the function svggraph function call
   keys=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  // create an array of values to pass into the fnction call.
   vals=[5,7,9,10,12,15,8];
+  // create an empty array object to populate with data
   data = [];
+  //loop throught the arrayss and create json object array 
   for (i = 0; i < keys.length; i++) {
     data[i]={"tag":keys[i],"val":vals[i]};
   }
-  drawSVGGrapgh_2(SVG_div_id, data);
+  //call the graph function with the created data object.
+  drawSVGGrapgh(SVG_div_id, data);
 }
 
 function GraphFromGlobalData(SVG_div_id){
   console.log('graph from global data loaded from url on startup');
-  drawSVGGrapgh_2(SVG_div_id, globalData);
+  drawSVGGrapgh(SVG_div_id, globalData);
 }
 
-function drawSVGGrapgh_2(SVG_div_id, data){
+function drawSVGGrapgh(SVG_div_id, data){
   //console.log(data);
   
   tags=[];
@@ -353,6 +340,20 @@ charts=''+
 '  <div id="SVGGraph_1"></div>'+
 '  <div id="SVGGraph_2"></div>'+
 '';
+
+loginpage='' +
+  '<h1>Login to WEC service</h1>'+
+  '<img src="img/login.jpg" width="359" height="140" border="0" alt="">'+
+  '<p>Please log in to the WEC services to access costomised options and features.' + 
+  '<form name="loginform" method="post" action="" onsubmit="return validateLoginForm()">' +
+  '<table>' +
+  '  <tr><td>Email :<td><input id="userid" type="text" value="g00364778@gmit.ie" name="username" required><br>' +
+  '  <tr><td>Password :<td><input id="passwd" type="password" value="password" name="password"><br>' +
+  '  <tr><td><td><input type="button" value="Login" onclick="ProcessLogin()"><br>' +
+  '</table>' +
+  '</form>' +
+  '<p id="errors"></p>' +
+  '';
 
 start=''+
 '<p>Your it to gave life whom as. Favourable dissimilar resolution led for and had. At play much to time four many. Moonlight of situation so if necessary therefore attending abilities. Calling looking enquire up me to in removal. Park fat she nor does play deal our. Procured sex material his offering humanity laughing moderate can. Unreserved had she nay dissimilar admiration interested. Departure performed exquisite rapturous so ye me resources.'+
