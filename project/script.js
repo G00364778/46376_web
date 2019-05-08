@@ -287,6 +287,7 @@ welcome=''+
 ' fact that it is your project.'+ 
 '<p><img class="img_left" src="img/ic.PNG" width="250" height="170" border="0" alt="">Please feel free to browse this site and should you wish to discuss your project'+
 ' or just require some advice on any matter, do not hesitate to contact us.'+
+'<p>&nbsp;<p>&nbsp;<p>&nbsp;<p>&nbsp;'+
 '';
 
 contact=''+
@@ -346,7 +347,7 @@ charts=''+
 '</select>'+
 '&nbsp;'+
 'Chart color:'+
-'<input type="color" value="#0000A0" id="colorPicker">'+
+'<input type="color" value="#6D87D6" id="colorPicker">'+
 '&nbsp;'+
 '<button onclick="graphs()">Draw Charts</button>'+
 '  <div id="SVGGraph_1"></div>'+
