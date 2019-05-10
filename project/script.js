@@ -79,12 +79,12 @@ function ProcessLogin(){
   // if a user variable was set with a value in the step above write a message to the screen and set the icon and name  
   if (user) {
     document.getElementById("errors").innerHTML = "Valid user logged in...";
-    document.getElementById("userid").innerHTML = '<i class="fa fa-user fa-2x" style="color:green">&nbsp;</i>' + users[item].username;
+    document.getElementById("userid").innerHTML = '<i class="fa fa-user fa-2x" style="color:var(--lblue)">&nbsp;</i>' + users[item].username;
     return true;
   }
   else {
     // otherwise set write a negative message and set iconto red and return false
-    document.getElementById("userid").innerHTML = '<i class="fa fa-user fa-2x" style="color:red">&nbsp;</i>';
+    document.getElementById("userid").innerHTML = '<i class="fa fa-user fa-2x" style="color:var(--orange)">&nbsp;</i>';
     document.getElementById("errors").innerHTML = "Sorry, the username or password is incorrect, please try again";
     return false;
   }
@@ -110,12 +110,12 @@ function onloadjs(){
 // the graphs function called by the show graphs button on the graphs page
 function graphs(){
   // generate graph from the global data loaded on startup into a variable
-  GraphFromGlobalData("#SVGGraph_1");
+  GraphFromGlobalData("#SVGGraph_1", "Sales 2018");
   // call a graph function using local data 
-  GraphFromData("#SVGGraph_2");
+  GraphFromData("#SVGGraph_2", "Max Temperature");
 }
 
-function GraphFromData(SVG_div_id){
+function GraphFromData(SVG_div_id, title){
   // graph from data generate a js object from two local ararys and pass that into the 
   // drawSVGGraph function that generate the svg in the svgid passed into the function call.
   // The svg id's are created in advance when the graph page is loaded from the icon menu 
@@ -134,95 +134,125 @@ function GraphFromData(SVG_div_id){
     data[i]={"tag":keys[i],"val":vals[i]};
   }
   //call the graph function with the created data object.
-  drawSVGGrapgh(SVG_div_id, data);
+  drawSVGGrapgh(SVG_div_id, data, title);
 }
 
-function GraphFromGlobalData(SVG_div_id){
-  console.log('graph from global data loaded from url on startup');
-  drawSVGGrapgh(SVG_div_id, globalData);
-}
-
-function drawSVGGrapgh(SVG_div_id, data){
-  //console.log(data);
+function GraphFromGlobalData(SVG_div_id, title){
+  //pass through the svi id to use for the graph and add the global data to 
+  //the function call populated with the file data loaded on startup
   
-  tags=[];
-  vals=[];
+  //write a console message
+  console.log('graph from global data loaded from url on startup');
+  // call the svg graphing function
+  drawSVGGrapgh(SVG_div_id, globalData, title);
+}
+
+function drawSVGGrapgh(SVG_div_id, data, title){
+  // the generic barchart function to generate barcharts from any size data. 
+  // A svg is and data object must be passed into the function for processing
+  // The object needs to contain an array of json objects with tag and value pairs.
+  // The first part of the function call will then parse out two arrays of tags and 
+  // values to be used generating the graphs
+
+  //console.log(data); // uncomment to see data passed into function in console log
+  
+  tags=[]; // array to hold tags parsed out for labelling graph
+  vals=[]; // array to hold values parsed out of data passed into funtion
+  // loop through data object and parse out values
   for (var i = 0, l = data.length; i < l; i++) {
     //console.log('i:'+i)
     var obj = data[i];
     tags.push(obj.tag);
     vals.push(obj.val);
-    //console.log(obj.tag + ":" + obj.val);
+    //console.log(obj.tag + ":" + obj.val); // uncomment to see data in console log
   }
-  console.log('tags:' + tags);
-  console.log('vals:' + vals);
+  // console.log('tags:' + tags); // uncomment to see labels in console log
+  // console.log('vals:' + vals); // uncomment to see values in console log
 
-  //svar myArray = [100, 220, 20, 160, 190, 90, 320];
-
+  // get values for customising graph components from graph web page
+  var graphTitle=title;
   var height = document.getElementById('chartHeight').value;
   var width = 600;
   var dataCount = vals.length;
   var gap = 2;
   var chartColor = document.getElementById('colorPicker').value;
   // create a scale for y
-  //var x = d3.scale.linear().domain([10,130]).range([0,960])
+  //var x = d3.scale.linear().domain([10,130]).range([0,960]) // propotype for d3.scale
   var yScale = d3.scaleLinear().domain([0,d3.max(vals)]).range([height,0]);
   // create a scale for x
   var xScale = d3.scaleBand().domain(tags).range([0, width])
   //create y Axis
   var yAxis = d3.axisLeft()
     .scale(yScale)
-  //create y Axis
+  //create x Axis
   var xAxis = d3.axisBottom()
     .scale(xScale);
  
-  //removes previous code
+  //removes previous svg code the svg container
   d3.select(SVG_div_id).selectAll("*").remove();
 
+  // create the new svg container to populate
   let svgContainer = d3.select(SVG_div_id).append("svg")
     .attr("height", Number(height)+60)
     .attr("width", width + 200);
  
+  // assign the parsed values to myRectangle object
   let myRectangle = svgContainer.selectAll('rect')
     .data(vals);
  
-  // enter loops through
+  // enter loops through the assigned data values one at a time and create 
+  // the bar graphs by populating x,y,width,height and fill in the loop
   myRectangle.enter()
     .append("rect")
       // function will run and returns i (the index value of the array)
-      // d = data, i = index
+      // d = data, i = index of myRectanle that holds the data values
       .attr("x",function(d,i){
-          return (50+(i*(width/dataCount)));
+          return (50+(i*(width/dataCount))); // calculate the bar x start point
         })
       .attr("y",function(d){
-          return yScale(d);
+          return yScale(d); // calculate the bar y start point
         })
-      .attr("width",(width/dataCount - gap))
+      .attr("width",(width/dataCount - gap)) // calculate bar width leaving gaps
       .attr("height",function(d){
-          return height-yScale(d);
+          return height-yScale(d); // calculate bar height bottom up, so gap at top really
         })
-      .attr("fill", chartColor);
+      .attr("fill", chartColor); // set the fill color from user choices made
  
   //To ensure that the axis is shown on top we do it here after the bars are drawn
-   //We will be appending "svgContainer" declared above on line 28
-   svgContainer.append("g")
-     .attr("transform", "translate(45,0)")
-     .call(yAxis);
+  //We will be appending to "svgContainer" declared above
+  //set the y axis grid and scale using axis created above with d3.axisLeft
+  svgContainer.append("g")
+   .attr("transform", "translate(45,0)")
+   .call(yAxis);
+  //set values for xAxis created above with d3.axixBottom
+  svgContainer.append("g")
+    .attr("transform", "translate(50," +height+")")
+    .call(xAxis)
+    .selectAll("text")
+    .attr("transform", "rotate(60)")
+    .attr("text-anchor", "start")
+    .attr("x", "9")
+    .attr("y", "3");
 
-   svgContainer.append("g")
-     .attr("transform", "translate(50," +height+")")
-     .call(xAxis)
-     .selectAll("text")
-         .attr("transform", "rotate(60)")
-         .attr("text-anchor", "start")
-         .attr("x", "9")
-         .attr("y", "3");
+  svgContainer.append("text")
+        .attr("x", (50+(width/2)-(graphTitle.length)/2))
+        .attr("y", 16)
+        .attr("text-anchor", "middle") 
+        .style("font-size", "16px")
+        .style("text-decoration", "underline") 
+        .text(graphTitle);
  }
 
 function processMailForm(){
+  //process the data received
+    // .....
+  //and display a user message
   document.getElementById("pageinfo").innerHTML = thanks;
 }
 
+// 
+// This is the variable containing the user data for login validation and display
+// 
 var userdata = {
     "users": [{
       "username": "Jattie",
@@ -244,6 +274,7 @@ var userdata = {
   };
  
 
+// html code/variable for thanks page
 thanks=''+
 '<h1>Thanks</h1>'+
 '<p>Your message was successfully submitted!'+
@@ -252,6 +283,7 @@ thanks=''+
 '<img src="img/stepper_application.png" height="183" border="0" alt="">'+
 '';
 
+// html code/variable for home page
 home=''+
 '<h1>About US</h1>'+
 '<p><img class="img_left" src="img/calipers_2.PNG" width="230" height="170" border="0" alt="" />Wicklow Engineering Consultancy was formed in 2014 as a multidisciplinary engineering team spread across the country, covering mechanical, electrical, automation & basic building disciplines. The team are set up to meet the needs of both the property and energy market clients and have all the required specialist functions. Our team are located around Dublin and Wicklow and provide a local, quality engineering solution for our clients.'+
@@ -261,7 +293,7 @@ home=''+
 '<p>We have been involved on projects with values ranging from a few hundred Euros to one hundred thousand Euros and are pleased to negotiate fees on a percentage of contract value basis or on a time charge basis, with payments phased to suit our Client\'s requirements.'+
 '';
 
-
+// html code/variable for welcom page
 welcome=''+
 '<h1>Welcome to WEC</h1>'+
 '<p><img class="img_left" src="img/eng_gear.png" width="404" height="125" border="0" alt="">We are a highly efficient and experienced firm of electrical, mechanical and'+
@@ -277,9 +309,10 @@ welcome=''+
 '<p>&nbsp;<p>&nbsp;<p>&nbsp;<p>&nbsp;'+
 '';
 
+// html code/variable for contact page
 contact=''+
 '<h1>Contact us</h1>'+
-'<img src="img/contact.png" width="297" height="170" border="0" alt="" />'+
+'<img class="img_inline" src="img/contact.png" width="297" height="170" border="0" alt="" />'+
 '<p><table>'+
 '<tr>'+
 '  <th>Address:</th>'+
@@ -318,11 +351,13 @@ contact=''+
 '</form>'+
 '';
 
+// html code/variable for find page
 find=''+
 '<h1>How to find us</h1>'+
-'<img src="img/bray.png" width="702" height="552" border="0" alt="">'+
+'<img class="img_full" src="img/bray.png" width="702" height="552" border="0" alt="">'+
 '';
 
+// html code/variable for charts page
 charts=''+
 '<h1>Dynamic Charts using SVG</h1>'+
 '<p>This pages shows a demontrtation of SVG capabilties generating graphs'+
@@ -341,21 +376,23 @@ charts=''+
 '  <div id="SVGGraph_2"></div>'+
 '';
 
+// html code/variable for login page
 loginpage='' +
   '<h1>Login to WEC service</h1>'+
-  '<img src="img/login.jpg" width="359" height="140" border="0" alt="">'+
+  '<img class="img_inline" src="img/login.jpg" width="359" height="140" border="0" alt="">'+
   '<p>Please log in to the WEC services to access costomised options and features.' + 
   '<form name="loginform" method="post" action="" onsubmit="return validateLoginForm()">' +
   '<table>' +
   '  <tr><td>Email :<td><input id="userid" type="text" value="g00364778@gmit.ie" name="username" required><br>' +
-  '  <tr><td>Password :<td><input id="passwd" type="password" value="password" name="password"><br>' +
-  '  <tr><td><td><input type="button" value="Login" onclick="ProcessLogin()"><br>' +
+  '  <tr><td>Password :<td><input id="passwd" type="password" value="password" name="password"><br>'+
+  '  <tr><td><td><input type="button" value="Login" onclick="ProcessLogin()"><br>'+
   '</table>' +
   '</form>' +
   '<p id="errors"></p>' +
   '';
 
-start=''+
+// html code/variable for test page for lots of text
+test=''+
 '<p>Your it to gave life whom as. Favourable dissimilar resolution led for and had. At play much to time four many. Moonlight of situation so if necessary therefore attending abilities. Calling looking enquire up me to in removal. Park fat she nor does play deal our. Procured sex material his offering humanity laughing moderate can. Unreserved had she nay dissimilar admiration interested. Departure performed exquisite rapturous so ye me resources.'+
 '<p>Way nor furnished sir procuring therefore but. Warmth far manner myself active are cannot called. Set her half end girl rich met. Me allowance departure an curiosity ye. In no talking address excited it conduct. Husbands debating replying overcame blessing he it me to domestic.'+
 '<p>Affronting discretion as do is announcing. Now months esteem oppose nearer enable too six. She numerous unlocked you perceive speedily. Affixed offence spirits or ye of offices between. Real on shot it were four an as. Absolute bachelor rendered six nay you juvenile. Vanity entire an chatty to.'+

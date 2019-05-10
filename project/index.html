@@ -2,34 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="Generator" content="EditPlus®">
   <meta name="Author" content="G00364778 - Gerhard van der Linde">
   <meta name="Keywords" content="">
-  <meta name="Description" content="GMIT Web Development Project">
+  <meta name="Description" content="GMIT Web Development Project D3.js">
   <title>Wicklow Engineering Consultancy</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="script.js"></script>
- </head>
+</head>
+ <!-- run the onloadjs function in script.js file -->
 <body onload="onloadjs()">
-<div class="pageheader">
-  <i class="fa fa-cogs fa-5x">&nbsp;</i><h1>Wicklow Engineering Consultancy</h1>
-</div>
-<div class="pageStatus">
+  <!-- create a div for page header section -->
+  <div class="pageheader">
+  <!-- insert an icon--> 
+  <i id="wec" class="fa fa-cogs fa-5x">&nbsp;</i><h1>Wicklow Engineering Consultancy</h1>
+  </div>
+  <div class="pageStatus">
   <p id="userid"><i class="fa fa-user-o fa-2x">&nbsp;</i></p>
-</div>
+  </div>
 
-<div id="menu" class="icon-bar">
+  <div id="menu" class="icon-bar">
   <a class="active" onClick="LoadPage('home'); return false;" href="#"><i class="fa fa-home"></i></a> 
   <a onClick="LoadPage('welcome'); return false;" href="#"><i class="fa fa-handshake-o"></i></a> 
   <a onClick="LoadPage('contact'); return false;" href="#"><i class="fa fa-envelope"></i></a> 
   <a onClick="LoadPage('find'); return false;" href="#"><i class="fa fa-globe"></i></a>
   <a onClick="LoadPage('login'); return false;" href="index.html"><i class="fa fa-unlock"></i></a>
   <a onClick="LoadPage('charts'); return false;" href="#"><i class="fa fa-bar-chart"></i></a> 
-</div> 
-<div id="pageinfo" class="content">
-</div>
-<p><hr>
+  </div> 
+  <div id="pageinfo" class="content">
+  </div>
+  <hr>
+  <i class="i_ftr">Powered by D3.js, developed by G00364778@gmit.ie</i>
+
 </body>
 </html>

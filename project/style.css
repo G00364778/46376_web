@@ -1,41 +1,66 @@
-/**/
+/*define css variables to facilitate easy global color changes*/
+:root{
+  --orange: #FFAE00;
+  --lblue: #6D87D6;
+  --dblue: #133AAC;
+  --logo_color: var(--lblue);
+  --icon_color: white;
+}
+/*.pageheader div with logo an company name*/
 .pageheader, .pageStatus, .content {
+  /*set all the fonts to sans-serif*/
   font-family: Sans-Serif;
 }
 
 .pageheader {
+  /*left the margins for the header*/
+  /*display: inline-block;*/
   margin-left: 90px;
   height:50px;
 }
+/*set the footer text attributes*/
+.i_ftr {
+  margin-left: 90px;
+  font-size: 70%;
+}
 
 .pageheader h1{
-  color: #FFAE00;
+  /*align the logo and the text and make it large and set this 
+    font to serif*/
+  color: var(--orange);
   display: inline-block;
   font-size: 300%;
   font-family: Serif;
 }
-
-h1{
-  color: #133AAC;
+/*set the colour of the logo icon*/
+ i#wec {
+  color: var(--logo_color);
 }
-
+/*set the color of the heading*/
+h1{
+  color: var(--dblue);
+}
+/*set the other headings*/
 h2,h3,h4,h5{
   color: #000;
 }
-
+/*set the horizontal line at the bottom of the pages*/
 hr{
-  border: 3px solid #FFAE00;
+  border: 3px solid var(--orange);
   border-radius: 3px;
   margin-left: 90px; /* Same as the width of the sidebar */
   width:800px;
-  padding: 0px 10px;
-  float:left;
+  /*padding: 0px 10px;*/
+  text-align:left;
+  margin-right:0
+  /*float:left;*/
 }
-
+/*set the position and location of the page status blcok 
+  showing the icon status and logged in user info*/
 .pageStatus {
   /*display: inline;*/
   position: absolute;
-  right: 0px;
+  left: 850px;
   top: 0px;
   width: 150px;
   height:50px;
@@ -44,12 +69,14 @@ hr{
 }
 
 .img_left{
+  /*set a class for aligning images inline with text to the left*/
   margin:0px 15px 0px 0px;
   display: inline;
   float:left;
 }
 
 .icon-bar {
+  /*define the icon bar position, colours and hebaviour*/
   height: 100%; /* Full-height: remove this if you want "auto" height */
   width: 90px; /* Set a specific width */
   position: fixed; /* Fixed Sidebar (stay in place on scroll) */
@@ -62,11 +89,12 @@ hr{
 }
 
 .icon-bar a {
+  /*set the behaviour of the icon bar links*/
   display: block; /* Make the links appear below each other instead of side-by-side */
   text-align: center; /* Center-align text */
   padding: 16px; /* Add some padding */
-  transition: all 0.3s ease; /* Add transition for hover effects */
-  color: white; /* White text color */
+  transition: all 0.5s ease; /* Add transition for hover effects */
+  color: var(--icon_color); /* White text color */
   font-size: 36px; /* Increased font-size */
 }
 
@@ -74,9 +102,9 @@ hr{
 .icon-bar a:hover {
   background-color: #000; /* Add a hover color */
 }
-
+/**/
 .active {
-  background-color: #6D87D6; /*#4CAF50; Add an active/current color */
+  background-color: var(--lblue); /*#4CAF50; Add an active/current color */
 } 
 
 /* Style page content */
@@ -87,22 +115,49 @@ hr{
   padding: 0px 10px;
 }
 
-/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+/* On smaller screens, where height is less than 450px, change the styles to accommodate*/
 @media screen and (max-height: 450px) {
-  .icon-bar {padding-top: 15px;}
+  /*move left and adjust top start*/
+  .icon-bar {
+    padding-top: 15px;
+    width: 50px;}
+  /*reduce icon sizes*/
   .icon-bar a {font-size: 18px;}
-  .icon-bar {width: 50px;}
-  .pageheader {margin-left: 50px;}
-  .content {margin-left: 50px;}
-  .content {width: auto;}
+  /*adjues header font and margins*/
+  .pageheader {
+    font-size: 50%;
+    margin-left: 50px;}
+  /*move login status left below header*/
+  .pageStatus {
+    left: 55px;
+    top: 50px;
+    padding: 5px;}
+  /*and reduce font and icon size*/
+  .pageStatus p {font-size: 70%;}
+  /*reduce all the page headers*/
+  h1 {font-size: 120%;}
+  /*recuce content font*/
+  .content {
+    margin-left: 50px;
+    width: auto;}
+  /*reduce full screen images*/
+  .img_full {
+    width:350px;
+    height:auto;}
+  /*reduce inline images*/
+  .img_inline {
+    width:100px;
+    height:auto;}
+  /*reduce left aligned images*/
+  .img_left {
+    width: 100px;
+    height: auto;}
+  /*reduce the content page font*/
+  .content {font-size: 80%;}
+  /*adjust the horizontal line at the bottom of the page*/
+  hr{
+    margin-left: 50px; 
+    width:300px;
+    float:none;
+  }
 } 
-@media screen and (max-width: 1000px) {
-  .pageheader h1 {font-size: 250%;}
-}
-
-@media screen and (max-width: 820px) {
-  .pageheader h1 {font-size: 200%;}
-}
-@media screen and (max-width: 700px) {
-  .pageheader h1 {font-size: 100%;}
-}
